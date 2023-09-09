@@ -6,9 +6,15 @@ This uses a publicly available API by [astridlol/lyrics](https://github.com/astr
 
 ## Installation
 
+The best way is to install it using cargo.
+
 ```bash
 cargo install lyrics
 ```
+
+However, if you are on windows, you can download the binary from the [releases](/releases) page.
+
+If you are on a Mac or Linux, please help other people by creating a binary for them and opening a new issue. Thanks!
 
 ## Usage
 
