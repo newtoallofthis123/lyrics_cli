@@ -1,8 +1,11 @@
+use human_panic::setup_panic;
+
 mod cli;
 mod web;
 
 #[tokio::main]
 async fn main() {
+    setup_panic!();
     cli::splash_screen();
     let (input, cmd) = cli::parse_args();
     if cmd == "-h" || cmd == "--help" {
