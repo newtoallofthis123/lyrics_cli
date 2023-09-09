@@ -2,6 +2,12 @@
 name = "lyrics"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+keywords = ["lyrics", "cli", "rust"]
+readme = "README.md"
+authors = ["Ishan Joshi <noobscience@duck.com>"]
+description = "A simple CLI to get lyrics of a song from Genius using a public availed API"
+repository = "https://github.com/newtoallofthis123/lyrics_cli"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
