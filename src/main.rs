@@ -1,10 +1,13 @@
 #![warn(clippy::all, clippy::pedantic, clippy::nursery, clippy::cargo)]
-#![allow(clippy::multiple_crate_versions)]
+#![allow(clippy::multiple_crate_versions, clippy::module_name_repetitions)]
 
 use human_panic::setup_panic;
 
 mod cli;
 mod web;
+mod spinner;
+
+use spinner::wrap_spinner;
 
 #[tokio::main]
 async fn main() {
@@ -16,7 +19,7 @@ async fn main() {
     } else if cmd == "-v" || cmd == "--version" {
         cli::print_version();
     } else {
-        let (url, lyrics) = web::get_lyrics(input.as_str()).await;
+        let (url, lyrics) = wrap_spinner(web::get_lyrics(input.as_str())).await.unwrap();
         bunt::println!("\n--------------------------");
         bunt::println!("{$yellow}{}{/$}", input);
         bunt::println!("--------------------------");
