@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+*"]
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CARGO_TERM_COLOR: always
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: Swatinem/rust-cache@v1
+    - name: Install cargo-deb
+      run: cargo install cargo-deb
+    - name: Install cargo-generate-rpm
+      run: cargo install cargo-generate-rpm
+    - name: Test
+      run: cargo test --release
+    - name: Publish to crates.io
+      run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+    - name: Build .deb
+      run: cargo deb -v -o ./lyrics_${GITHUB_REF##*/}_amd64.deb
+    - name: Upload .deb package
+      run: |
+        chmod +x ./.github/workflows/upload_asset.sh
+        ./.github/workflows/upload_asset.sh \
+          "newtoallofthis123/lyrics_cli" ./lyrics_${GITHUB_REF##*/}_amd64.deb $GITHUB_TOKEN
+    - name: Build .rpm
+      run: cargo generate-rpm -o ./lyrics_${GITHUB_REF##*/}_x86_64.rpm
+    - name: Upload .rpm package
+      run: |
+        chmod +x ./.github/workflows/upload_asset.sh
+        ./.github/workflows/upload_asset.sh \
+          "newtoallofthis123/lyrics_cli" ./lyrics_${GITHUB_REF##*/}_x86_64.rpm $GITHUB_TOKEN
+  windows:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test
+        run: cargo test --release
+      - name: Build
+        run: cargo build --release
+      - name: Upload portable executable
+        run: |
+          cp ./target/release/lyrics.exe ./lyrics-${GITHUB_REF##*/}-portable.exe
+          ./.github/workflows/upload_asset.sh \
+            "newtoallofthis123/lyrics_cli" ./lyrics-${GITHUB_REF##*/}-portable.exe $GITHUB_TOKEN
