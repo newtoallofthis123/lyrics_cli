@@ -4,8 +4,8 @@
 use human_panic::setup_panic;
 
 mod cli;
-mod web;
 mod spinner;
+mod web;
 
 use spinner::wrap_spinner;
 
