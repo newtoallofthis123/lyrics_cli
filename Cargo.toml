@@ -22,3 +22,27 @@ tokio = {version = "1", features = ["full"]}
 human-panic = {version = "1.0"}
 crossterm = "0.27.0"
 futures = "0.3.28"
+
+[package.metadata.deb]
+name = "lyrics"
+maintainer = "NoobScience <noobscience@duck.com>"
+copyright = "2023, NoobScience <noobscience@duck.com>"
+license-file = ["LICENSE", "0"]
+extended-description = "A simple CLI to get lyrics of a song from Genius using a public availed API"
+depends = "openssl, ca-certificates"
+section = "utils"
+priority = "optional"
+assets = [
+  # Binary
+  ["target/release/lyrics", "/usr/bin/", "111"],
+]
+
+[package.metadata.generate-rpm]
+assets = [
+  # Binary
+  { source = "target/release/lyrics", dest = "/usr/bin/lyrics", mode = "111" },
+]
+
+[package.metadata.generate-rpm.requires]
+openssl = "*"
+ca-certificates = "*"
