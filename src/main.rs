@@ -1,6 +1,3 @@
-#![warn(clippy::all, clippy::pedantic, clippy::nursery, clippy::cargo)]
-#![allow(clippy::multiple_crate_versions, clippy::module_name_repetitions)]
-
 use human_panic::setup_panic;
 
 mod cli;
