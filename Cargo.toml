@@ -30,6 +30,7 @@ tokio = {version = "1", features = ["full"]}
 human-panic = {version = "1.0"}
 crossterm = "0.27.0"
 futures = "0.3.28"
+scraper = "0.18"
 
 [package.metadata.deb]
 name = "lyrics"
