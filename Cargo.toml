@@ -12,6 +12,14 @@ repository = "https://github.com/newtoallofthis123/lyrics_cli"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lints.clippy]
+all = "warn"
+pedantic = "warn"
+nursery = "warn"
+cargo = "warn"
+multiple_crate_versions = "allow"
+module_name_repetitions = "allow"
+
 [dependencies]
 inquire = {version = "0.6"}
 bunt = {version = "0.2"}
