@@ -20,7 +20,7 @@ fn clean_text(text: &str)->String{
     text.replace(['\n', '\t'], "").trim().to_string()
 }
 
-pub async fn get_search_options(term: &str)->HashMap<i32, (String, String)>{
+pub async fn get_search_options(term: &str)->HashMap<usize, (String, String)>{
     let search_html = get_page_html(&format!("{DUMB_URL}/search?q={term}")).await;
     let search_doc = Html::parse_document(&search_html);
 
@@ -32,7 +32,7 @@ pub async fn get_search_options(term: &str)->HashMap<i32, (String, String)>{
     for (i, link) in search_links.enumerate() {
         let link_text = clean_text(&link.text().collect::<Vec<_>>().join(""));
         let link_href = link.value().attr("href").unwrap().to_string();
-        search_options.insert(i as i32, (link_text, link_href));
+        search_options.insert(i, (link_text, link_href));
     }
 
     search_options
@@ -41,5 +41,17 @@ pub async fn get_search_options(term: &str)->HashMap<i32, (String, String)>{
 pub async fn get_lyrics(slug: &str)->String{
     let lyrics_html = get_page_html(&format!("{DUMB_URL}{slug}")).await;
 
-    return lyrics_html;
+    let lyrics_doc = Html::parse_document(&lyrics_html);
+    let selector = Selector::parse("div#lyrics").unwrap();
+
+    let lyrics = lyrics_doc.select(&selector);
+
+    let lyrics = lyrics
+        .map(|lyric| lyric.text().collect::<Vec<_>>().join("\n"))
+        .collect::<String>();
+
+    //split by \"
+    // let lyrics = lyrics.split("\"").collect::<Vec<_>>().join("\n");
+
+    lyrics
 }

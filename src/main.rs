@@ -11,8 +11,14 @@ mod scraper;
 async fn main() {
     setup_panic!();
     cli::splash_screen();
-    let x = scraper::get_search_options("Falling in love with you").await;
-    println!("{:?}", scraper::get_lyrics(x.get(&0).unwrap().1.as_str()).await );
+    let x = scraper::get_search_options("Chainsmokers paris").await;
+
+    let url = x.get(&0).unwrap().1.as_str();
+
+    let lyrics = scraper::get_lyrics(url).await;
+
+    println!("{}", lyrics);
+
     /* let (input, cmd) = cli::parse_args();
     if cmd == "-h" || cmd == "--help" {
         cli::print_help();
